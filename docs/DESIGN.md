@@ -4,7 +4,7 @@
 
 独立 domain 为 `handan_water`，一个配置条目对应一个供水户号。原生 config_flow、reconfigure、options；户号标准化后以 SHA-256 生成稳定内部身份，不在条目标题、异常信息和统计 ID 中公开户号。先 HTTPS 验证，明确同意后允许 HTTP。使用独立 DummyCookieJar，不读取浏览器或微信状态。
 
-DataUpdateCoordinator 每 24 小时刷新；账户和账单是核心查询，缴费和网站分析是可分别失败的附加数据。附加查询失败时相关实体不可用，不显示旧数据为最新。核心失败使本次全部实体不可用并保留缓存。没有数据时为 unknown/空历史，不伪造零；服务明确返回 0 才显示 0。
+DataUpdateCoordinator 每 24 小时刷新；账户和账单是核心查询，缴费和网站分析是可分别失败的附加数据。附加查询失败时相关实体不可用，不显示旧数据为最新。核心失败使依赖数据的实体不可用并保留缓存，诊断状态和按钮仍可用。没有数据时为 unknown/空历史，不伪造零；服务明确返回 0 才显示 0。
 
 账户为父设备，各真实 rlmcode 为子设备。所有实体中文名称，稳定 unique_id 与设备标识基于“账户身份 + 原始水表编号”的哈希；原始水表编号可在本地设备名称/属性查看。新表自动发现，当前查询不再包含某表时保留身份但不可用；仅有历史账单不能推断退役时间。不存在跨水表的累计读数实体。
 
@@ -21,6 +21,8 @@ HA Store 按配置条目持久化仅必要的规范化账单、交易和同步�
 ## Recorder 与故障恢复
 
 使用 2026.10.2 `async_add_external_statistics`，外部 ID 为 `handan_water:<哈希>_water` / `_cost`；`source=handan_water`、`mean_type=StatisticMeanType.NONE`、水量 `unit_class="volume"`、费用 `unit_class=None`、`has_sum=True`。不直接操作 HA 数据库，不向实体 sensor.* 历史灌入自造状态。
+
+同步诊断 `issues` 保留所有错误；运行时 `_conflicts` 仅记录 `HistoryConflict`。读数可用性仍检查持久化 source_blocks、实际观测的一致性、已提交历史的扩展规则及本次同步发现的冲突，不使用一般 Recorder 故障来判断水表读数是否有效。超时、读写失败和提交未确认仅使同步诊断失败，不屏蔽有效读数。此状态分类不改变 Store 格式、账本、点生成、检查点及导入器。
 
 写入采用绝对累计值和稳定时间键（Recorder 原生 upsert）。先持久化规范化账本与待导入点，再排队写入；等待 Recorder 队列完成后回读核对 state/sum，最后持久化已提交映射。任何阶段崩溃均可重放，不依赖内存“累计器”。每次启动会核对 Recorder，处理 Store 存在而 Recorder 被清空/尚未提交的情形；失败状态保留，手动“恢复历史同步”按钮可重试，不清空历史，不重设基线。
 

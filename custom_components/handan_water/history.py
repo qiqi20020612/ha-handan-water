@@ -36,6 +36,9 @@ class History:
         self.committed: dict[str, dict[str, list[str]]] = {}
         self.source_blocks: dict[str, str] = {}
         self.issues: dict[str, str] = {}
+        # Runtime integrity conflicts gate readings; transient sync errors are
+        # diagnostic only. Neither changes the persistent ledger/checkpoints.
+        self._conflicts: dict[str, str] = {}
         self.status = "等待同步"
         self.last_sync: datetime | None = None
         self._lock = asyncio.Lock()
@@ -103,7 +106,7 @@ class History:
             validate_extension(self.committed.get(self.statistic_id(meter, "water"), {}), points)
         except HistoryConflict as err:
             return str(err)
-        return self.issues.get(self.statistic_id(meter, "water"))
+        return self._conflicts.get(self.statistic_id(meter, "water"))
 
     async def async_merge(self, snapshot: Snapshot) -> None:
         async with self._lock:
@@ -209,6 +212,7 @@ class History:
                 return
             self.status = "正在同步"
             self.issues = {}
+            self._conflicts = {}
             had_failure = False
             for meter in sorted(self.meters):
                 for kind, builder in (("water", water_points), ("cost", cost_points)):
@@ -227,6 +231,7 @@ class History:
                                 await self._async_import(meter, kind, points)
                     except HistoryConflict as err:
                         self.issues[statistic_id] = str(err)
+                        self._conflicts[statistic_id] = str(err)
                     except Exception:
                         had_failure = True
                         self.issues[statistic_id] = "历史统计同步失败，可重试恢复同步"

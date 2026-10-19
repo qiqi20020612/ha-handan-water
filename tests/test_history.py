@@ -197,4 +197,105 @@ async def test_amount_revision_and_missing_store_preserve_existing_statistics(
     await lost.async_merge(replace(sample, bills=sample.bills[:2], payments=None))
     await lost.async_sync(True)
     assert lost.issues
+    assert lost.water_issue(meter) == "Recorder 与本地账本不一致，暂停覆盖已有历史"
     assert await lost._async_read(cost_id) == before
+
+
+@pytest.mark.parametrize(
+    ("boundary", "failure"),
+    [
+        ("_async_read", OSError("recorder unavailable")),
+        ("_async_read", TimeoutError()),
+        ("readback", InvalidData("unconfirmed readback")),
+        ("async_add_external_statistics", OSError("recorder write failed")),
+    ],
+    ids=["read-error", "timeout", "unconfirmed-readback", "write-error"],
+)
+async def test_recorder_failure_retry_and_restart_keep_exact_totals(
+    recorder_mock, hass, sample, boundary, failure
+):
+    await hass.async_start()
+    history = History(hass, "test_entry", account_identity("00001234"))
+    await history.async_merge(sample)
+    original_read = history._async_read
+    read_once = set()
+
+    async def unconfirmed_readback(statistic_id):
+        if statistic_id in read_once:
+            # Recorder has accepted the write, but confirmation failed before
+            # a checkpoint. Recovery must read it back without adding it again.
+            raise failure
+        read_once.add(statistic_id)
+        return await original_read(statistic_id)
+
+    target = (
+        patch.object(history, "_async_read", side_effect=unconfirmed_readback)
+        if boundary == "readback"
+        else (
+            patch.object(history, boundary, side_effect=failure)
+            if boundary == "_async_read"
+            else patch(f"custom_components.handan_water.history.{boundary}", side_effect=failure)
+        )
+    )
+    with target:
+        await history.async_sync(True)
+    assert history.status == "同步失败，可重试"
+    assert len(history.issues) == 4
+    assert not history.committed
+    assert history.last_sync is None
+    assert all(history.water_issue(meter) is None for meter in history.meters)
+    await async_recorder_block_till_done(hass)
+    assert {
+        stat_id: len(await history._async_read(stat_id)) for stat_id in history.issues
+    } == dict.fromkeys(history.issues, 7 if boundary == "readback" else 0)
+
+    await history.async_sync(True)
+    assert history.status == "同步完成", history.issues
+    before = {stat_id: await history._async_read(stat_id) for stat_id in history.committed}
+    assert all(len(rows) == 7 for rows in before.values())
+    assert {Decimal(rows[max(rows)][1]) for rows in before.values()} == {
+        Decimal(27),
+        Decimal(9),
+        Decimal(135),
+        Decimal(45),
+    }
+    await history.async_sync(True)
+    restored = History(hass, "test_entry", history.account_key)
+    await restored.async_load()
+    await restored.async_sync(True)
+    assert restored.status == "同步完成", restored.issues
+    assert {stat_id: await restored._async_read(stat_id) for stat_id in before} == before
+    assert restored.committed == history.committed
+
+
+async def test_source_conflict_survives_concurrent_recorder_failure_and_restart(
+    recorder_mock, hass, sample
+):
+    await hass.async_start()
+    history = History(hass, "test_entry", account_identity("00001234"))
+    await history.async_merge(sample)
+    await history.async_sync(True)
+    before = {stat_id: await history._async_read(stat_id) for stat_id in history.committed}
+    committed = {stat_id: dict(rows) for stat_id, rows in history.committed.items()}
+    bill = sample.bills[0]
+    changed = replace(bill, end_reading=bill.end_reading + 1, volume=bill.volume + 1)
+    await history.async_merge(replace(sample, bills=(changed,), payments=None))
+    with (
+        patch.object(history, "_async_read", side_effect=OSError("recorder unavailable")),
+        patch("custom_components.handan_water.history.async_add_external_statistics") as imported,
+    ):
+        await history.async_sync(True)
+        imported.assert_not_called()
+    assert history.status == "同步失败，可重试"
+    assert history.water_issue(bill.meter) == history.source_blocks[bill.meter]
+    assert history.water_issue("DEMO_METER_002") is None
+    assert history.committed == committed
+
+    restored = History(hass, "test_entry", history.account_key)
+    await restored.async_load()
+    await restored.async_sync(True)
+    assert restored.status == "部分统计暂停，需核查"
+    assert restored.water_issue(bill.meter)
+    assert restored.water_issue("DEMO_METER_002") is None
+    assert {stat_id: await restored._async_read(stat_id) for stat_id in before} == before
+    assert restored.committed == committed

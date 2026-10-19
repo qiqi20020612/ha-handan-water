@@ -1,5 +1,7 @@
 name: HACS repository validation
 on:
+  push:
+  pull_request:
   workflow_dispatch:
 permissions:
   contents: read
@@ -7,7 +9,7 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Require real repository metadata
         run: |
           python - <<'PY'

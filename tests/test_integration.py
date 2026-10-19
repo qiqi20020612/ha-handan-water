@@ -19,7 +19,12 @@ from custom_components.handan_water.const import (
     CONF_TRANSPORT,
     DOMAIN,
 )
-from custom_components.handan_water.models import CannotConnect, account_identity, meter_identity
+from custom_components.handan_water.models import (
+    CannotConnect,
+    InvalidData,
+    account_identity,
+    meter_identity,
+)
 
 pytestmark = [
     pytest.mark.freeze_time("2026-10-19T08:30:00Z", real_asyncio=True),
@@ -139,6 +144,96 @@ async def test_optional_failure_does_not_erase_meter_data(hass, query_mock):
     assert entry.runtime_data.data.payments is None
     assert entry.runtime_data.data.payment_error
     assert hass.states.get(get_entity(hass, "00001234", "recent_payment")).state == "12"
+
+
+@pytest.mark.parametrize(
+    "failure",
+    [OSError("recorder unavailable"), TimeoutError(), InvalidData("unconfirmed write")],
+    ids=["recorder-error", "recorder-timeout", "unconfirmed-write"],
+)
+async def test_recorder_failure_does_not_hide_valid_readings(hass, query_mock, failure):
+    # Exercise the real coordinator and HA entity states; only the Recorder
+    # boundary is replaced. Actual Recorder retries are covered in test_history.
+    hass.config.components.add("recorder")
+    hass.set_state(CoreState.running)
+    with patch(
+        "custom_components.handan_water.history.History._async_import", side_effect=failure
+    ) as imported:
+        entry = await setup(hass)
+        coordinator = entry.runtime_data
+        readings = [
+            (get_entity(hass, "00001234", "reading", meter), expected)
+            for meter, expected in (("DEMO_METER_001", "1027"), ("DEMO_METER_002", "209"))
+        ]
+        status = get_entity(hass, "00001234", "sync_status")
+        assert coordinator.last_update_success
+        assert all(hass.states.get(entity_id).state == value for entity_id, value in readings)
+        assert hass.states.get(status).state == "同步失败，可重试"
+        assert len(hass.states.get(status).attributes["统计问题"]) == 4
+        assert not coordinator.history.committed
+
+        await coordinator.async_refresh()
+        assert coordinator.last_update_success
+        assert all(hass.states.get(entity_id).state == value for entity_id, value in readings)
+
+        original = query_mock.side_effect
+        query_mock.side_effect = CannotConnect("供水服务连接失败或超时")
+        await coordinator.async_refresh()
+        assert all(hass.states.get(entity_id).state == "unavailable" for entity_id, _ in readings)
+        query_mock.side_effect = original
+        await coordinator.async_refresh()
+        assert all(hass.states.get(entity_id).state == value for entity_id, value in readings)
+
+        imported.side_effect = None
+        recover = get_entity(hass, "00001234", "sync_history", platform="button")
+        await hass.services.async_call("button", "press", {"entity_id": recover}, blocking=True)
+        assert hass.states.get(status).state == "同步完成"
+        assert not coordinator.history.issues
+        assert all(hass.states.get(entity_id).state == value for entity_id, value in readings)
+    hass.config.components.remove("recorder")
+
+
+@pytest.mark.parametrize("kind", ["revision", "same-day", "regression", "volume-mismatch"])
+async def test_reading_conflicts_remain_unavailable_without_recorder(hass, query_mock, kind):
+    entry = await setup(hass)
+    original = query_mock.side_effect
+
+    async def query(client, service, today):
+        body = await original(client, service, today)
+        if service == "200005":
+            row = dict(body["reclist"][0])
+            if kind in {"revision", "same-day"}:
+                row["rlecode"] = str(int(row["rlecode"]) + 1)
+                row["rlsl"] = str(int(row["rlsl"]) + 1)
+            elif kind == "regression":
+                row.update(
+                    rlprdate="2026/09/15", rlrdate="2026/09/25", rlscode="2", rlecode="4", rlsl="2"
+                )
+            else:
+                row["rlsl"] = str(int(row["rlsl"]) + 1)
+            if kind == "revision":
+                body["reclist"][0] = row
+            else:
+                row["rlid"] = "DEMO_CONFLICTING_RECORD"
+                body["reclist"].append(row)
+        return body
+
+    query_mock.side_effect = query
+    await entry.runtime_data.async_refresh()
+    assert entry.runtime_data.last_update_success
+    affected = get_entity(hass, "00001234", "reading", "DEMO_METER_001")
+    other = get_entity(hass, "00001234", "reading", "DEMO_METER_002")
+    assert hass.states.get(affected).state == "unavailable"
+    assert hass.states.get(other).state == "209"
+    assert entry.runtime_data.history.water_issue("DEMO_METER_001")
+    assert not entry.runtime_data.history.committed
+    # A reload or disabling imports must not bypass the same source checks.
+    assert await hass.config_entries.async_reload(entry.entry_id)
+    await hass.async_block_till_done()
+    await entry.runtime_data.history.async_sync(False)
+    entry.runtime_data.async_update_listeners()
+    assert hass.states.get(affected).state == "unavailable"
+    assert hass.states.get(other).state == "209"
 
 
 async def test_startup_listener_and_recovery_button(hass, query_mock):
