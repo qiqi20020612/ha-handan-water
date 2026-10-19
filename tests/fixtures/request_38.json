@@ -1,0 +1,20 @@
+{
+  "id": "JSASD7",
+  "param": {
+    "in_json": {
+      "head": {
+        "version": "1.0.1",
+        "source": "ewide",
+        "desIfno": "DEMO_CODE_001",
+        "servCode": "200001",
+        "msgId": "DEMO_MSGID_001",
+        "msgTime": "20170626093926"
+      },
+      "body": {
+        "acctOrgNo": "DEMO_ORGID_002",
+        "queryType": "0",
+        "queryValue": "DEMO_ACCOUNT_001"
+      }
+    }
+  }
+}

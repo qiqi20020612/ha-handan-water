@@ -1,0 +1,25 @@
+name: Tests
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - run: python -m pip install -r requirements_test.txt
+      - run: ruff check .
+      - run: ruff format --check .
+      - run: python scripts/check_public_files.py
+      - run: pytest -q --cov=custom_components.handan_water --cov-report=term-missing
+  hassfest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: home-assistant/actions/hassfest@master

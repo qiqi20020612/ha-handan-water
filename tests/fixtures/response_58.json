@@ -1,0 +1,24 @@
+{
+  "result": "ok",
+  "data": {
+    "head": {
+      "servCode": "200020",
+      "extend": "",
+      "msgId": "",
+      "msgTime": "20261019120000",
+      "source": "",
+      "version": "1.0.1",
+      "desIfno": ""
+    },
+    "body": {
+      "orgName": "DEMO_ORGNAME_001",
+      "orgNo": "DEMO_ORGID_001",
+      "historyRank": "1000",
+      "rtnMsg": "交易成功",
+      "waterinfo3": "",
+      "waterinfo2": "2026.09#2|2026.07#6|2026.05#4|2026.03#7|2026.01#5|2025.11#3|",
+      "rtnCode": "9999",
+      "waterinfo1": "DEMO_ACCOUNT|-1|DEMO_ACCOUNT|-1|2026.09|2|50.00%|"
+    }
+  }
+}

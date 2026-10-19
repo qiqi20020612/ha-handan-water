@@ -1,0 +1,15 @@
+{
+  "id": "4YA45Q",
+  "param": {
+    "in_json": {
+      "body": {
+        "queryType": "0",
+        "queryValue": "DEMO_ACCOUNT_001"
+      },
+      "head": {
+        "servCode": "200001",
+        "version": "1.0.1"
+      }
+    }
+  }
+}

@@ -1,0 +1,417 @@
+{
+  "result": "ok",
+  "data": {
+    "head": {
+      "servCode": "200005",
+      "extend": "",
+      "msgId": "",
+      "msgTime": "20261019120000",
+      "source": "",
+      "version": "1.0.1",
+      "desIfno": ""
+    },
+    "body": {
+      "totalOweAmt": 0,
+      "reclist": [
+        {
+          "rlid": "DEMO_RECORD_001",
+          "rlmcode": "DEMO_METER_001",
+          "rlje": 10,
+          "rlprdate": "2026/07/14",
+          "rlrdate": "2026/09/14",
+          "recdetail": [
+            {
+              "rdje": 7.0,
+              "piname": "水费一阶",
+              "rddj": 3.5,
+              "rdsl": 2
+            },
+            {
+              "rdje": 2,
+              "piname": "污水处理费",
+              "rddj": 1,
+              "rdsl": 2
+            },
+            {
+              "rdje": 1.0,
+              "piname": "不征税水费",
+              "rddj": 0.5,
+              "rdsl": 2
+            }
+          ],
+          "rlmonth": "2026.09",
+          "rlscode": 1025,
+          "rlpaidflag": "Y",
+          "rlznj": 0,
+          "rlsl": 2,
+          "rlecode": 1027
+        },
+        {
+          "rlid": "DEMO_RECORD_002",
+          "rlmcode": "DEMO_METER_002",
+          "rlje": 5,
+          "rlprdate": "2026/07/14",
+          "rlrdate": "2026/09/14",
+          "recdetail": [
+            {
+              "rdje": 3.5,
+              "piname": "水费一阶",
+              "rddj": 3.5,
+              "rdsl": 1
+            },
+            {
+              "rdje": 1,
+              "piname": "污水处理费",
+              "rddj": 1,
+              "rdsl": 1
+            },
+            {
+              "rdje": 0.5,
+              "piname": "不征税水费",
+              "rddj": 0.5,
+              "rdsl": 1
+            }
+          ],
+          "rlmonth": "2026.09",
+          "rlscode": 208,
+          "rlpaidflag": "Y",
+          "rlznj": 0,
+          "rlsl": 1,
+          "rlecode": 209
+        },
+        {
+          "rlid": "DEMO_RECORD_003",
+          "rlmcode": "DEMO_METER_001",
+          "rlje": 30,
+          "rlprdate": "2026/05/12",
+          "rlrdate": "2026/07/14",
+          "recdetail": [
+            {
+              "rdje": 21.0,
+              "piname": "水费一阶",
+              "rddj": 3.5,
+              "rdsl": 6
+            },
+            {
+              "rdje": 6,
+              "piname": "污水处理费",
+              "rddj": 1,
+              "rdsl": 6
+            },
+            {
+              "rdje": 3.0,
+              "piname": "不征税水费",
+              "rddj": 0.5,
+              "rdsl": 6
+            }
+          ],
+          "rlmonth": "2026.07",
+          "rlscode": 1019,
+          "rlpaidflag": "Y",
+          "rlznj": 0,
+          "rlsl": 6,
+          "rlecode": 1025
+        },
+        {
+          "rlid": "DEMO_RECORD_004",
+          "rlmcode": "DEMO_METER_002",
+          "rlje": 0,
+          "rlprdate": "2026/05/12",
+          "rlrdate": "2026/07/14",
+          "recdetail": [
+            {
+              "rdje": 0.0,
+              "piname": "水费一阶",
+              "rddj": 3.5,
+              "rdsl": 0
+            },
+            {
+              "rdje": 0,
+              "piname": "污水处理费",
+              "rddj": 1,
+              "rdsl": 0
+            },
+            {
+              "rdje": 0.0,
+              "piname": "不征税水费",
+              "rddj": 0.5,
+              "rdsl": 0
+            }
+          ],
+          "rlmonth": "2026.07",
+          "rlscode": 208,
+          "rlpaidflag": "Y",
+          "rlznj": 0,
+          "rlsl": 0,
+          "rlecode": 208
+        },
+        {
+          "rlid": "DEMO_RECORD_005",
+          "rlmcode": "DEMO_METER_001",
+          "rlje": 20,
+          "rlprdate": "2026/03/12",
+          "rlrdate": "2026/05/12",
+          "recdetail": [
+            {
+              "rdje": 14.0,
+              "piname": "水费一阶",
+              "rddj": 3.5,
+              "rdsl": 4
+            },
+            {
+              "rdje": 4,
+              "piname": "污水处理费",
+              "rddj": 1,
+              "rdsl": 4
+            },
+            {
+              "rdje": 2.0,
+              "piname": "不征税水费",
+              "rddj": 0.5,
+              "rdsl": 4
+            }
+          ],
+          "rlmonth": "2026.05",
+          "rlscode": 1015,
+          "rlpaidflag": "Y",
+          "rlznj": 0,
+          "rlsl": 4,
+          "rlecode": 1019
+        },
+        {
+          "rlid": "DEMO_RECORD_006",
+          "rlmcode": "DEMO_METER_002",
+          "rlje": 10,
+          "rlprdate": "2026/03/12",
+          "rlrdate": "2026/05/12",
+          "recdetail": [
+            {
+              "rdje": 7.0,
+              "piname": "水费一阶",
+              "rddj": 3.5,
+              "rdsl": 2
+            },
+            {
+              "rdje": 2,
+              "piname": "污水处理费",
+              "rddj": 1,
+              "rdsl": 2
+            },
+            {
+              "rdje": 1.0,
+              "piname": "不征税水费",
+              "rddj": 0.5,
+              "rdsl": 2
+            }
+          ],
+          "rlmonth": "2026.05",
+          "rlscode": 206,
+          "rlpaidflag": "Y",
+          "rlznj": 0,
+          "rlsl": 2,
+          "rlecode": 208
+        },
+        {
+          "rlid": "DEMO_RECORD_007",
+          "rlmcode": "DEMO_METER_001",
+          "rlje": 35,
+          "rlprdate": "2026/01/12",
+          "rlrdate": "2026/03/12",
+          "recdetail": [
+            {
+              "rdje": 24.5,
+              "piname": "水费一阶",
+              "rddj": 3.5,
+              "rdsl": 7
+            },
+            {
+              "rdje": 7,
+              "piname": "污水处理费",
+              "rddj": 1,
+              "rdsl": 7
+            },
+            {
+              "rdje": 3.5,
+              "piname": "不征税水费",
+              "rddj": 0.5,
+              "rdsl": 7
+            }
+          ],
+          "rlmonth": "2026.03",
+          "rlscode": 1008,
+          "rlpaidflag": "Y",
+          "rlznj": 1,
+          "rlsl": 7,
+          "rlecode": 1015
+        },
+        {
+          "rlid": "DEMO_RECORD_008",
+          "rlmcode": "DEMO_METER_002",
+          "rlje": 15,
+          "rlprdate": "2026/01/12",
+          "rlrdate": "2026/03/12",
+          "recdetail": [
+            {
+              "rdje": 10.5,
+              "piname": "水费一阶",
+              "rddj": 3.5,
+              "rdsl": 3
+            },
+            {
+              "rdje": 3,
+              "piname": "污水处理费",
+              "rddj": 1,
+              "rdsl": 3
+            },
+            {
+              "rdje": 1.5,
+              "piname": "不征税水费",
+              "rddj": 0.5,
+              "rdsl": 3
+            }
+          ],
+          "rlmonth": "2026.03",
+          "rlscode": 203,
+          "rlpaidflag": "Y",
+          "rlznj": 1,
+          "rlsl": 3,
+          "rlecode": 206
+        },
+        {
+          "rlid": "DEMO_RECORD_009",
+          "rlmcode": "DEMO_METER_001",
+          "rlje": 25,
+          "rlprdate": "2025/11/10",
+          "rlrdate": "2026/01/12",
+          "recdetail": [
+            {
+              "rdje": 17.5,
+              "piname": "水费一阶",
+              "rddj": 3.5,
+              "rdsl": 5
+            },
+            {
+              "rdje": 5,
+              "piname": "污水处理费",
+              "rddj": 1,
+              "rdsl": 5
+            },
+            {
+              "rdje": 2.5,
+              "piname": "不征税水费",
+              "rddj": 0.5,
+              "rdsl": 5
+            }
+          ],
+          "rlmonth": "2026.01",
+          "rlscode": 1003,
+          "rlpaidflag": "Y",
+          "rlznj": 0,
+          "rlsl": 5,
+          "rlecode": 1008
+        },
+        {
+          "rlid": "DEMO_RECORD_010",
+          "rlmcode": "DEMO_METER_002",
+          "rlje": 5,
+          "rlprdate": "2025/11/10",
+          "rlrdate": "2026/01/12",
+          "recdetail": [
+            {
+              "rdje": 3.5,
+              "piname": "水费一阶",
+              "rddj": 3.5,
+              "rdsl": 1
+            },
+            {
+              "rdje": 1,
+              "piname": "污水处理费",
+              "rddj": 1,
+              "rdsl": 1
+            },
+            {
+              "rdje": 0.5,
+              "piname": "不征税水费",
+              "rddj": 0.5,
+              "rdsl": 1
+            }
+          ],
+          "rlmonth": "2026.01",
+          "rlscode": 202,
+          "rlpaidflag": "Y",
+          "rlznj": 0,
+          "rlsl": 1,
+          "rlecode": 203
+        },
+        {
+          "rlid": "DEMO_RECORD_011",
+          "rlmcode": "DEMO_METER_001",
+          "rlje": 15,
+          "rlprdate": "2025/09/10",
+          "rlrdate": "2025/11/10",
+          "recdetail": [
+            {
+              "rdje": 10.5,
+              "piname": "水费一阶",
+              "rddj": 3.5,
+              "rdsl": 3
+            },
+            {
+              "rdje": 3,
+              "piname": "污水处理费",
+              "rddj": 1,
+              "rdsl": 3
+            },
+            {
+              "rdje": 1.5,
+              "piname": "不征税水费",
+              "rddj": 0.5,
+              "rdsl": 3
+            }
+          ],
+          "rlmonth": "2025.11",
+          "rlscode": 1000,
+          "rlpaidflag": "Y",
+          "rlznj": 0,
+          "rlsl": 3,
+          "rlecode": 1003
+        },
+        {
+          "rlid": "DEMO_RECORD_012",
+          "rlmcode": "DEMO_METER_002",
+          "rlje": 10,
+          "rlprdate": "2025/09/10",
+          "rlrdate": "2025/11/10",
+          "recdetail": [
+            {
+              "rdje": 7.0,
+              "piname": "水费一阶",
+              "rddj": 3.5,
+              "rdsl": 2
+            },
+            {
+              "rdje": 2,
+              "piname": "污水处理费",
+              "rddj": 1,
+              "rdsl": 2
+            },
+            {
+              "rdje": 1.0,
+              "piname": "不征税水费",
+              "rddj": 0.5,
+              "rdsl": 2
+            }
+          ],
+          "rlmonth": "2025.11",
+          "rlscode": 200,
+          "rlpaidflag": "Y",
+          "rlznj": 0,
+          "rlsl": 2,
+          "rlecode": 202
+        }
+      ],
+      "rceAmt": "0",
+      "misaving": 0
+    }
+  }
+}

@@ -1,0 +1,285 @@
+{
+  "result": "ok",
+  "data": {
+    "head": {
+      "servCode": "200008",
+      "extend": "",
+      "msgId": "",
+      "msgTime": "20261019120000",
+      "source": "",
+      "version": "1.0.1",
+      "desIfno": ""
+    },
+    "body": {
+      "extend": "",
+      "payment": [
+        {
+          "pdatetime": "20260915100000",
+          "pmonth": "2026.09",
+          "psavingbq": -3,
+          "pznj": 0,
+          "psavingqc": 3,
+          "pspje": 15,
+          "ppayment": 12,
+          "pid": "DEMO_TRANSACTION_001",
+          "chargetype": "示例渠道",
+          "psavingqm": 0,
+          "invflag": "N",
+          "reclist": [
+            {
+              "rlje": 10,
+              "rlmonth": "2026.09",
+              "rlscode": 1025,
+              "rlznj": 0,
+              "rlsl": 2,
+              "rlecode": 1027
+            },
+            {
+              "rlje": 5,
+              "rlmonth": "2026.09",
+              "rlscode": 208,
+              "rlznj": 0,
+              "rlsl": 1,
+              "rlecode": 209
+            }
+          ]
+        },
+        {
+          "pdatetime": "20260905090000",
+          "pmonth": "2026.09",
+          "psavingbq": 2,
+          "pznj": 0,
+          "psavingqc": 1,
+          "pspje": 0,
+          "ppayment": 2,
+          "pid": "DEMO_TRANSACTION_002",
+          "chargetype": "示例渠道",
+          "psavingqm": 3,
+          "invflag": "N"
+        },
+        {
+          "pdatetime": "20260902090000",
+          "pmonth": "2026.09",
+          "psavingbq": 1,
+          "pznj": 0,
+          "psavingqc": 0,
+          "pspje": 0,
+          "ppayment": 1,
+          "pid": "DEMO_TRANSACTION_003",
+          "chargetype": "示例渠道",
+          "psavingqm": 1,
+          "invflag": "N"
+        },
+        {
+          "pdatetime": "20260715100000",
+          "pmonth": "2026.07",
+          "psavingbq": -5,
+          "pznj": 0,
+          "psavingqc": 5,
+          "pspje": 30,
+          "ppayment": 25,
+          "pid": "DEMO_TRANSACTION_004",
+          "chargetype": "示例渠道",
+          "psavingqm": 0,
+          "invflag": "N",
+          "reclist": [
+            {
+              "rlje": 30,
+              "rlmonth": "2026.07",
+              "rlscode": 1019,
+              "rlznj": 0,
+              "rlsl": 6,
+              "rlecode": 1025
+            },
+            {
+              "rlje": 0,
+              "rlmonth": "2026.07",
+              "rlscode": 208,
+              "rlznj": 0,
+              "rlsl": 0,
+              "rlecode": 208
+            }
+          ]
+        },
+        {
+          "pdatetime": "20260705090000",
+          "pmonth": "2026.07",
+          "psavingbq": 5,
+          "pznj": 0,
+          "psavingqc": 0,
+          "pspje": 0,
+          "ppayment": 5,
+          "pid": "DEMO_TRANSACTION_005",
+          "chargetype": "示例渠道",
+          "psavingqm": 5,
+          "invflag": "N"
+        },
+        {
+          "pdatetime": "20260515100000",
+          "pmonth": "2026.05",
+          "psavingbq": 0,
+          "pznj": 0,
+          "psavingqc": 0,
+          "pspje": 30,
+          "ppayment": 30,
+          "pid": "DEMO_TRANSACTION_006",
+          "chargetype": "示例渠道",
+          "psavingqm": 0,
+          "invflag": "N",
+          "reclist": [
+            {
+              "rlje": 20,
+              "rlmonth": "2026.05",
+              "rlscode": 1015,
+              "rlznj": 0,
+              "rlsl": 4,
+              "rlecode": 1019
+            },
+            {
+              "rlje": 10,
+              "rlmonth": "2026.05",
+              "rlscode": 206,
+              "rlznj": 0,
+              "rlsl": 2,
+              "rlecode": 208
+            }
+          ]
+        },
+        {
+          "pdatetime": "20260315100000",
+          "pmonth": "2026.03",
+          "psavingbq": -10,
+          "pznj": 0,
+          "psavingqc": 10,
+          "pspje": 50,
+          "ppayment": 40,
+          "pid": "DEMO_TRANSACTION_007",
+          "chargetype": "示例渠道",
+          "psavingqm": 0,
+          "invflag": "N",
+          "reclist": [
+            {
+              "rlje": 35,
+              "rlmonth": "2026.03",
+              "rlscode": 1008,
+              "rlznj": 1,
+              "rlsl": 7,
+              "rlecode": 1015
+            },
+            {
+              "rlje": 15,
+              "rlmonth": "2026.03",
+              "rlscode": 203,
+              "rlznj": 1,
+              "rlsl": 3,
+              "rlecode": 206
+            }
+          ]
+        },
+        {
+          "pdatetime": "20260305090000",
+          "pmonth": "2026.03",
+          "psavingbq": 10,
+          "pznj": 0,
+          "psavingqc": 0,
+          "pspje": 0,
+          "ppayment": 10,
+          "pid": "DEMO_TRANSACTION_008",
+          "chargetype": "示例渠道",
+          "psavingqm": 10,
+          "invflag": "N"
+        },
+        {
+          "pdatetime": "20260115100000",
+          "pmonth": "2026.01",
+          "psavingbq": -6,
+          "pznj": 0,
+          "psavingqc": 6,
+          "pspje": 30,
+          "ppayment": 24,
+          "pid": "DEMO_TRANSACTION_009",
+          "chargetype": "示例渠道",
+          "psavingqm": 0,
+          "invflag": "N",
+          "reclist": [
+            {
+              "rlje": 25,
+              "rlmonth": "2026.01",
+              "rlscode": 1003,
+              "rlznj": 0,
+              "rlsl": 5,
+              "rlecode": 1008
+            },
+            {
+              "rlje": 5,
+              "rlmonth": "2026.01",
+              "rlscode": 202,
+              "rlznj": 0,
+              "rlsl": 1,
+              "rlecode": 203
+            }
+          ]
+        },
+        {
+          "pdatetime": "20260105090000",
+          "pmonth": "2026.01",
+          "psavingbq": 6,
+          "pznj": 0,
+          "psavingqc": 0,
+          "pspje": 0,
+          "ppayment": 6,
+          "pid": "DEMO_TRANSACTION_010",
+          "chargetype": "示例渠道",
+          "psavingqm": 6,
+          "invflag": "N"
+        },
+        {
+          "pdatetime": "20251115100000",
+          "pmonth": "2025.11",
+          "psavingbq": -4,
+          "pznj": 0,
+          "psavingqc": 4,
+          "pspje": 25,
+          "ppayment": 21,
+          "pid": "DEMO_TRANSACTION_011",
+          "chargetype": "示例渠道",
+          "psavingqm": 0,
+          "invflag": "N",
+          "reclist": [
+            {
+              "rlje": 15,
+              "rlmonth": "2025.11",
+              "rlscode": 1000,
+              "rlznj": 0,
+              "rlsl": 3,
+              "rlecode": 1003
+            },
+            {
+              "rlje": 10,
+              "rlmonth": "2025.11",
+              "rlscode": 200,
+              "rlznj": 0,
+              "rlsl": 2,
+              "rlecode": 202
+            }
+          ]
+        },
+        {
+          "pdatetime": "20251110090000",
+          "pmonth": "2025.11",
+          "psavingbq": 4,
+          "pznj": 0,
+          "psavingqc": 0,
+          "pspje": 0,
+          "ppayment": 4,
+          "pid": "DEMO_TRANSACTION_012",
+          "chargetype": "示例渠道",
+          "psavingqm": 4,
+          "invflag": "N"
+        }
+      ],
+      "rtnMsg": "查询成功",
+      "rtnCode": "9999"
+    }
+  }
+}

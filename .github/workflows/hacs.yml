@@ -1,0 +1,22 @@
+name: HACS repository validation
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require real repository metadata
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          manifest = json.loads(Path('custom_components/handan_water/manifest.json').read_text())
+          assert 'OWNER' not in manifest['documentation'], 'Run scripts/prepare_repository.py before public release'
+          assert manifest['codeowners'], 'Set the actual codeowner before public release'
+          PY
+      - uses: hacs/action@main
+        with:
+          category: integration

@@ -1,0 +1,44 @@
+{
+  "result": "ok",
+  "data": {
+    "head": {
+      "servCode": "200001",
+      "extend": "",
+      "msgId": "",
+      "msgTime": "20261019120000",
+      "source": "",
+      "version": "1.0.1",
+      "desIfno": ""
+    },
+    "body": {
+      "bc": "",
+      "totalPenalty": "0",
+      "RecentWater": "2",
+      "RecentPay": "12",
+      "recordCount": "0",
+      "capitalNo": "",
+      "consName": "DEMO_NAME_001",
+      "opfid": "DEMO_OPFID_001",
+      "consType": "GR",
+      "orgNo": "DEMO_ORGID_001",
+      "totalOweAmt": "0",
+      "dkBs": "0",
+      "averagePay": "15",
+      "prepayAmt": "0",
+      "addr": "DEMO_ADDRESS_001",
+      "rtnCode": "9999",
+      "orgName": "DEMO_ORGNAME_001",
+      "ysrs": "4",
+      "totalRcvblAmt": "0",
+      "rtnMsg": "未欠费",
+      "sftel": "DEMO_PHONE_001",
+      "consNo": "DEMO_ACCOUNT_001",
+      "bcname": "",
+      "totalRcvedAmt": "0",
+      "phone": "",
+      "jtsyl_2": "未达到",
+      "jtsyl_1": "余量100",
+      "acctOrgNo": ""
+    }
+  }
+}

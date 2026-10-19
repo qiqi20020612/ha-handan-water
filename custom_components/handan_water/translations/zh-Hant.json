@@ -1,0 +1,48 @@
+{
+  "title": "邯郸供水",
+  "config": {
+    "step": {
+      "user": {
+        "title": "配置邯郸供水",
+        "description": "只读查询，不需要微信或 openid。优先尝试 HTTPS；只有勾选同意后，HTTPS 连接失败才回退到 HTTP。HTTP 会明文传输户号及返回的账户资料。",
+        "data": {
+          "account_number": "供水户号",
+          "allow_insecure_http": "同意使用 HTTP 明文查询（户号和账户资料可能被窃听）"
+        }
+      },
+      "reconfigure": {
+        "title": "重新验证账户与传输方式",
+        "description": "只读查询，不需要微信或 openid。优先尝试 HTTPS；只有勾选同意后，HTTPS 连接失败才回退到 HTTP。HTTP 会明文传输户号及返回的账户资料。 为保持水表和统计身份，重新配置必须使用原户号；其他户号请另外添加集成。",
+        "data": {
+          "account_number": "供水户号",
+          "allow_insecure_http": "同意使用 HTTP 明文查询（户号和账户资料可能被窃听）"
+        }
+      }
+    },
+    "error": {
+      "invalid_account": "户号无效或返回账户不匹配，请核对户号。",
+      "authentication_required": "服务拒绝无微信身份查询；当前版本没有额外认证方式，请反馈脱敏失败信息。",
+      "cannot_connect": "无法连接供水服务。可重试；若需 HTTP，必须明确同意明文隐私风险。",
+      "business_error": "供水服务返回业务错误。请核对户号，或稍后重试；未识别的错误码不等同于认证失败。",
+      "invalid_data": "供水返回的数据格式发生变化，已停止使用异常数据。"
+    },
+    "abort": {
+      "already_configured": "该供水户号已配置。",
+      "account_mismatch": "重新配置必须使用原户号；其他户号请另外添加集成。"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "查询与历史选项",
+        "description": "每天自动刷新一次。历史只包含真实抄表日期的累计观测，不插值；能源图的日柱可能集中在抄表端点，不能当作真实单日用水。费用是账单应收，不等同实缴；不使用固定单价。关闭导入不会删除已有统计。",
+        "data": {
+          "import_history": "导入真实抄表端点和应收历史统计（无每日实际用水量）",
+          "query_payments": "查询账户缴费记录",
+          "query_analysis": "查询网站用水分析（仅诊断，归属不明确）",
+          "history_attribute_limit": "历史实体属性最多显示条数（不删除账本）"
+        }
+      }
+    }
+  }
+}

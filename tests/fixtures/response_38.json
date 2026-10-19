@@ -1,0 +1,49 @@
+{
+  "result": "ok",
+  "data": {
+    "head": {
+      "servCode": "200001",
+      "extend": "",
+      "msgId": "",
+      "msgTime": "20261019120000",
+      "source": "",
+      "version": "1.0.1",
+      "desIfno": ""
+    },
+    "body": {
+      "totalPenalty": "0",
+      "orgName": "DEMO_ORGNAME_001",
+      "recordCount": "0",
+      "totalRcvblAmt": "0",
+      "capitalNo": "",
+      "consName": "DEMO_NAME_001",
+      "rtnMsg": "未欠费",
+      "consNo": "DEMO_ACCOUNT_001",
+      "consType": "GR",
+      "orgNo": "DEMO_ORGID_001",
+      "totalRcvedAmt": "0",
+      "totalOweAmt": "0",
+      "prepayAmt": "0",
+      "addr": "DEMO_ADDRESS_001",
+      "rtnCode": "9999",
+      "acctOrgNo": "DEMO_ORGID_003",
+      "rcvblDet": [
+        {
+          "rcvblYm": "",
+          "orgName": "",
+          "consName": "",
+          "rcvedAmt": "",
+          "consNo": "",
+          "oweAmt": "",
+          "extend": "",
+          "orgNo": "",
+          "tPq": "",
+          "rcvblAmt": "",
+          "rcvblPenalty": "",
+          "acctOrgNo": "",
+          "rcvblAmtId": ""
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "4YA45Q",
+  "param": {
+    "in_json": {
+      "body": {
+        "queryType": "0",
+        "queryValue": "DEMO_ACCOUNT_001",
+        "endYm": "2026.10",
+        "bgnYm": "2025.10"
+      },
+      "head": {
+        "servCode": "200005",
+        "version": "1.0.1"
+      }
+    }
+  }
+}
