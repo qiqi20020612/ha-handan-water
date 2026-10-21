@@ -93,17 +93,98 @@ async def test_entities_native_water_and_actual_money(hass, query_mock):
     )
 
 
+@pytest.mark.parametrize("existing_devices", [False, True], ids=["new-install", "existing-install"])
+async def test_device_links_use_registry_ids_without_deprecations(
+    hass, query_mock, caplog, existing_devices
+):
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        data={CONF_ACCOUNT: "00001234", CONF_ALLOW_HTTP: True, CONF_TRANSPORT: "http"},
+        unique_id=account_identity("00001234"),
+    )
+    entry.add_to_hass(hass)
+    registry = dr.async_get(hass)
+    account_key = account_identity("00001234")
+    meters = ("DEMO_METER_001", "DEMO_METER_002")
+    before = {}
+    if existing_devices:
+        # The old via_device parameter was already stored as via_device_id by
+        # HA. Seed that registry state without calling a deprecated API.
+        parent = registry.async_get_or_create(
+            config_entry_id=entry.entry_id, identifiers={(DOMAIN, account_key)}, name="合成账户"
+        )
+        before[account_key] = parent.id
+        registry.async_update_device(parent.id, name_by_user="自定义账户名称")
+        for meter in meters:
+            key = meter_identity(account_key, meter)
+            device = registry.async_get_or_create(
+                config_entry_id=entry.entry_id,
+                identifiers={(DOMAIN, key)},
+                via_device_id=parent.id,
+                name=f"合成水表 {meter}",
+            )
+            before[key] = device.id
+
+    with patch.object(
+        registry, "async_get_or_create", wraps=registry.async_get_or_create
+    ) as create:
+        assert await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+        assert create.call_count > 0
+        assert all("via_device" not in call.kwargs for call in create.call_args_list)
+
+    parent = registry.async_get_device_by_identifier((DOMAIN, account_key), entry.entry_id)
+    assert parent is not None
+    assert parent.via_device_id is None
+    if existing_devices:
+        assert parent.id == before[account_key]
+        assert parent.name_by_user == "自定义账户名称"
+    devices = dr.async_entries_for_config_entry(registry, entry.entry_id)
+    assert len(devices) == 3
+    for meter in meters:
+        key = meter_identity(account_key, meter)
+        device = registry.async_get_device_by_identifier((DOMAIN, key), entry.entry_id)
+        assert device is not None
+        assert device.via_device_id == parent.id
+        if existing_devices:
+            assert device.id == before[key]
+        entity_id = get_entity(hass, "00001234", "reading", meter)
+        assert er.async_get(hass).async_get(entity_id).device_id == device.id
+        assert hass.states.get(entity_id).state != "unavailable"
+    assert not any(
+        record.name == "homeassistant.helpers.frame" and "deprecated" in record.getMessage()
+        for record in caplog.records
+    )
+
+
 async def test_two_accounts_and_reload_keep_independent_identities(hass, query_mock):
     entry = await setup(hass)
     another = await setup(hass, "00005678")
     first = get_entity(hass, "00001234", "reading", "DEMO_METER_001")
     second = get_entity(hass, "00005678", "reading", "DEMO_METER_001")
+    registry = dr.async_get(hass)
+    before = {
+        device.id: device.via_device_id
+        for account_entry in (entry, another)
+        for device in dr.async_entries_for_config_entry(registry, account_entry.entry_id)
+    }
+    for account_entry in (entry, another):
+        devices = dr.async_entries_for_config_entry(registry, account_entry.entry_id)
+        parent = next(device for device in devices if device.via_device_id is None)
+        assert all(
+            device.id == parent.id or device.via_device_id == parent.id for device in devices
+        )
     assert first != second
     assert await hass.config_entries.async_reload(entry.entry_id)
     await hass.async_block_till_done()
     assert get_entity(hass, "00001234", "reading", "DEMO_METER_001") == first
     assert len(entry.runtime_data.history.bills) == 12
     assert len(another.runtime_data.history.bills) == 12
+    assert {
+        device.id: device.via_device_id
+        for account_entry in (entry, another)
+        for device in dr.async_entries_for_config_entry(registry, account_entry.entry_id)
+    } == before
     assert await hass.config_entries.async_unload(entry.entry_id)
     assert hass.states.get(second).state == "1027"
 
@@ -265,6 +346,12 @@ async def test_empty_bills_and_dynamic_new_meter(hass, query_mock):
     await hass.async_block_till_done()
     new = get_entity(hass, "00001234", "reading", "DEMO_METER_NEW")
     assert hass.states.get(new).state == "1027"
+    registry = dr.async_get(hass)
+    parent = registry.async_get_device_by_identifier(
+        (DOMAIN, entry.runtime_data.history.account_key), entry.entry_id
+    )
+    device = registry.async_get(er.async_get(hass).async_get(new).device_id)
+    assert device.via_device_id == parent.id
 
     async def empty_bills(client, service, today):
         body = await original(client, service, today)
